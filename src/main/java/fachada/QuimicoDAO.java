@@ -15,11 +15,10 @@ import java.util.List;
  *
  * @author Rosa Rodriguez
  */
-public class QuimicoDAO implements IQuimicoDAO {
+public class QuimicoDAO{
 
     private String nombreColeccion = "Quimicos";
     
-    @Override
     public List<Quimico> obtenerTodosLosQuimicos() {
         Conexion c = Conexion.createInstance();
         MongoCollection collection = this.getCollection(c);

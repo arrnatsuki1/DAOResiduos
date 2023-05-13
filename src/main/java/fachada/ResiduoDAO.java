@@ -18,15 +18,15 @@ import java.util.List;
  *
  * @author Rosa Rodriguez
  */
-class ResiduoDAO implements IResiduoDAO {
+class ResiduoDAO {
 
-    @Override
+    
     public List<Residuo> obtenerTodosLosResiduos() {
         Conexion c = Conexion.createInstance();
         return null;
     }
 
-    @Override
+    
     public boolean comprobarResiduo(Residuo residuo) {
         Conexion c = Conexion.createInstance();
         //EN UN TXT POR AHORA
@@ -63,7 +63,6 @@ class ResiduoDAO implements IResiduoDAO {
         }
     }
 
-    @Override
     public void guardarResiduo(Residuo residuo) {
         Conexion c = Conexion.createInstance();
         //EN UN TXT POR AHORA

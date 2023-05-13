@@ -6,7 +6,6 @@ package fachada;
 
 import Entidades.Quimico;
 import Entidades.Residuo;
-import fachada.IDatos;
 import java.util.List;
 
 /**

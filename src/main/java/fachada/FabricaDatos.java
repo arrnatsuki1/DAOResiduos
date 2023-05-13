@@ -4,9 +4,6 @@
  */
 package fachada;
 
-import fachada.IDatos;
-import fachada.FachadaDatos;
-
 /**
  *
  * @author Rosa Rodriguez

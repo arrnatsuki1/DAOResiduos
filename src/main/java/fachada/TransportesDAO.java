@@ -6,8 +6,8 @@ package fachada;
 
 /**
  *
- * @author Alan Rodriguez
+ * @author Rosa Rodriguez
  */
-public class TransportesDAO {
+class TransportesDAO {
     
 }
