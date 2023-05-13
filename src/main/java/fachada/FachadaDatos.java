@@ -5,7 +5,6 @@
 package fachada;
 
 import Entidades.Quimico;
-import fachada.ControlResiduos;
 import Entidades.Residuo;
 import fachada.IDatos;
 import java.util.List;
@@ -16,32 +15,40 @@ import java.util.List;
  */
 class FachadaDatos implements IDatos {
 
-    private ControlResiduos controlResiduos;
-    private ControlQuimicos controlQuimicos;
+    private EmpresasDAO daoempresas;
+    private QuimicoDAO daoquimicos;
+    private TrasladoDAO daotraslados;
+    private TransportesDAO daotransportes;
+    private SolicitudesDAO daosolicitudes;
+    private ResiduoDAO daoresiduos;
+    
     
     public FachadaDatos() {
-        controlQuimicos = new ControlQuimicos();
-        controlResiduos = new ControlResiduos();
+        this.daoempresas = new EmpresasDAO();
+        this.daoquimicos = new QuimicoDAO();
+        this.daoresiduos = new ResiduoDAO();
+        this.daosolicitudes = new SolicitudesDAO();
+        this.daotransportes = new TransportesDAO();
+        this.daotraslados = new TrasladoDAO();
     }
     
     @Override
     public List<Residuo> obtenerTodosLosResiduos() {
-        return controlResiduos.obtenerTodosLosResiduos();
+        return null;
     }
 
     @Override
     public boolean comprobarResiduo(Residuo residuo) {
-        return controlResiduos.comprobarResiduo(residuo);
+        return false;
     }
 
     @Override
     public void guardarResiduo(Residuo residuo) {
-        controlResiduos.guardarResiduo(residuo);
     }
 
     @Override
     public List<Quimico> obtenerTodosLosQuimicos() {
-        return controlQuimicos.obtenerTodosLosQuimicos();
+        return null;
     }
 
 }

@@ -23,7 +23,7 @@ class ResiduoDAO implements IResiduoDAO {
     @Override
     public List<Residuo> obtenerTodosLosResiduos() {
         Conexion c = Conexion.createInstance();
-        
+        return null;
     }
 
     @Override
