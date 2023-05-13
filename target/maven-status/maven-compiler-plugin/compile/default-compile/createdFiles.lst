@@ -1,0 +1,11 @@
+fachada/ControlQuimicos.class
+fachada/FachadaDatos.class
+fachada/ControlSolicitudes.class
+fachada/Conexion.class
+fachada/IDatos.class
+fachada/FabricaDatos.class
+fachada/IQuimicoDAO.class
+fachada/ResiduoDAO.class
+fachada/QuimicoDAO.class
+fachada/ControlResiduos.class
+fachada/IResiduoDAO.class
