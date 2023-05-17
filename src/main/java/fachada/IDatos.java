@@ -4,7 +4,7 @@
  */
 package fachada;
 
-
+import Excepciones.BaseException;
 import fachada.Asignacion;
 import fachada.Quimico;
 import fachada.Residuo;
@@ -18,6 +18,6 @@ public interface IDatos {
     List<Residuo> obtenerTodosLosResiduos();
     boolean comprobarResiduo(Residuo residuo);
     void guardarResiduo(Residuo residuo);
-    List<Quimico> obtenerTodosLosQuimicos();
+    List<Quimico> obtenerTodosLosQuimicos()throws BaseException;
     public void guardarAsignacion(Asignacion a);
 }

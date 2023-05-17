@@ -5,6 +5,7 @@
 package fachada;
 
 
+import Excepciones.BaseException;
 import fachada.Asignacion;
 import fachada.Quimico;
 import fachada.Residuo;
@@ -40,21 +41,22 @@ class FachadaDatos implements IDatos {
     }   
     
     @Override
-    public List<Residuo> obtenerTodosLosResiduos() {
-        return null;
+    public List<Residuo> obtenerTodosLosResiduos(){
+        return daoresiduos.obtenerTodosLosResiduos();
     }
 
     @Override
     public boolean comprobarResiduo(Residuo residuo) {
-        return false;
+        return daoresiduos.comprobarResiduo(residuo);
     }
 
     @Override
     public void guardarResiduo(Residuo residuo) {
+        daoresiduos.guardarResiduo(residuo);
     }
 
     @Override
-    public List<Quimico> obtenerTodosLosQuimicos() {
+    public List<Quimico> obtenerTodosLosQuimicos() throws BaseException {
         return daoquimicos.obtenerTodosLosQuimicos();
     }
 

@@ -5,17 +5,16 @@
 package fachada;
 
 import EntidadesMongo.ResiduoMongo;
+import Excepciones.ResiduoExistenteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import fachada.Quimico;
+import com.mongodb.client.model.Filters;
 import fachada.Residuo;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,62 +36,82 @@ class ResiduoDAO {
         while (cursor.hasNext()) {
             ResiduoMongo rm = cursor.next();
             Residuo r = new Residuo();
-            r.setCodigo(cursor.next().getCodigo().toString());
+            r.setCodigo(rm.getCodigo());
             r.setQuimicos(rm.getQuimicos());
+            r.setNombre(rm.getNombre());
             lista.add(r);
         }
         return lista;
     }
-
+    
     public boolean comprobarResiduo(Residuo residuo) {
-        Conexion c = Conexion.createInstance();
-        //EN UN TXT POR AHORA
-        try {
-            File f = new File("residuos.txt");
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-
-            String line = br.readLine();
-
-            Residuo r = new Residuo();
-            while (line != null) {
-                List<Quimico> quimicos = new ArrayList();
-
-                while (line.length() > 2) {
-                    String quimico = line.substring(0, line.indexOf("/"));
-                    quimicos.add(new Quimico(quimico));
-                    line = line.substring(line.indexOf("/") + 1);
-                    System.out.println(quimico);
-                }
-
-                r.setQuimicos(quimicos);
-
-                if (residuo.getQuimicos().equals(r.getQuimicos())) {
-                    return true;
-                }
-                line = br.readLine();
-            }
-
-            return false;
-
-        } catch (Exception e) {
-            return false;
+        MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
+        
+        /*
+            IGNORE ESTO, NO LE SABEMO CASI A LAS CONSULTAS ASI QUE OCUPAMOS
+            ORDENAR LOS RESIDUOS ANTES DE CONSULTARLOS
+        */
+        List<String> quimicos = new ArrayList();
+        for(Quimico q : residuo.getQuimicos()) {
+            quimicos.add(q.getNombre());
         }
+        Collections.sort(quimicos);
+        List<Quimico> q = new ArrayList();
+        for(String sq : quimicos) {
+            q.add(new Quimico(sq));
+        }
+        residuo.setQuimicos(q);
+        /* FIN DE NUESTRA ASQUEROSIDAD */
+        
+        
+        //Con la misma composicion quimica
+        MongoCursor<ResiduoMongo> comprobacion = c.find(
+                Filters.eq("quimicos", residuo.getQuimicos())
+        ).iterator();
+        
+        if(comprobacion.hasNext()) {
+            return true;
+        }
+        //Con el mismo nombre
+        comprobacion = c.find(
+                Filters.eq("nombre", residuo.getNombre())
+        ).iterator();
+        
+        if(comprobacion.hasNext()) {
+            return true;
+        }
+        //Que tenga el mismo codigo
+        comprobacion = c.find(
+                Filters.eq("codigo", residuo.getCodigo())
+        ).iterator();
+        
+        if(comprobacion.hasNext()) {
+            return true;
+        }
+        
+        return false;
     }
 
     public void guardarResiduo(Residuo residuo) {
         MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
         ResiduoMongo rm = new ResiduoMongo();
-        rm.setNombre(residuo.getCodigo());
+        rm.setNombre(residuo.getNombre());
+        rm.setCodigo(residuo.getCodigo());
         rm.setNombreProductor(nombreEmpresaGenerico);
         rm.setQuimicos(residuo.getQuimicos());
         c.insertOne(rm);
     }
-
+    
     private MongoCollection<ResiduoMongo> getCollection(Conexion c) {
         MongoDatabase db = c.getDatabase("DISEÑO");
         MongoCollection<ResiduoMongo> collecionAsignaciones = db.getCollection(nombreColeccion, ResiduoMongo.class);
         return collecionAsignaciones;
+    }
+    
+    private void SortArray() {
+        
+        
+        
     }
 
 }
