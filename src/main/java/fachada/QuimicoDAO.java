@@ -4,11 +4,14 @@
  */
 package fachada;
 
-import Entidades.Quimico;
+import EntidadesMongo.ResiduoMongo;
+import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import fachada.Quimico;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,29 +20,32 @@ import java.util.List;
  */
 public class QuimicoDAO{
 
-    private String nombreColeccion = "Quimicos";
+    private final String nombreColeccion = "ResiduoMongo";
     
     public List<Quimico> obtenerTodosLosQuimicos() {
-        Conexion c = Conexion.createInstance();
+        
+        //YUPIII SI CONSIGUE TODOS LOS QUIMICOS Y NO LOS REPITEEE
+        
+        Conexion c = Conexion.createInstance();     
         MongoCollection collection = this.getCollection(c);
+   
+        DistinctIterable lista = 
+                collection.distinct("quimicos", String.class);
         
-        MongoCursor<Quimico> quimicos = collection.find().iterator();
+        MongoCursor<String> a = lista.iterator();
         
+        List<Quimico> quimicos = new ArrayList();
         
-            List<Quimico> listaQuimicos = new ArrayList();
-        
-        while(quimicos.hasNext()) {
-            listaQuimicos.add(quimicos.next());
+        while(a.hasNext()) {
+            quimicos.add(new Quimico(a.next()));
         }
-        return listaQuimicos;
+        
+        return quimicos;
     }
     
-    
-    private MongoCollection<Quimico> getCollection(Conexion c) {
-        MongoDatabase db = c.getDatabase("Quimicos");
-        MongoCollection<Quimico> collecionQuimicos = db.getCollection(nombreColeccion, Quimico.class);
+    private MongoCollection<ResiduoMongo> getCollection(Conexion c) {
+        MongoDatabase db = c.getDatabase("DISEÑO");
+        MongoCollection<ResiduoMongo> collecionQuimicos = db.getCollection(nombreColeccion, ResiduoMongo.class);
         return collecionQuimicos;
-    } 
-    
-    
+    }
 }

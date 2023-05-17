@@ -4,9 +4,10 @@
  */
 package fachada;
 
-import Entidades.Asignacion;
-import Entidades.Quimico;
-import Entidades.Residuo;
+
+import fachada.Asignacion;
+import fachada.Quimico;
+import fachada.Residuo;
 import java.util.List;
 
 /**

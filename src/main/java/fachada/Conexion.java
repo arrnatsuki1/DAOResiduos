@@ -6,6 +6,7 @@ package fachada;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientOptions.Builder;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -15,30 +16,32 @@ import org.bson.codecs.pojo.PojoCodecProvider;
  *
  * @author Rosa Rodriguez
  */
-class Conexion extends MongoClient{
+class Conexion extends com.mongodb.MongoClient {
+
     private static Conexion conexion;
-    
-    
+
     private Conexion() {
-        
-        CodecRegistry pojoCodecRegistry = fromRegistries(
-                MongoClient.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().automatic(true).build())
-        );
-        
-        MongoClient conexion = 
-                new MongoClient("127.0.0.1", 
-                        MongoClientOptions.builder()
-                                .codecRegistry(pojoCodecRegistry)
-                                .build());
-        
-    }
+        super("192.168.0.29",
+                MongoClientOptions.builder()
+                        .codecRegistry(
+                                fromRegistries(MongoClient.getDefaultCodecRegistry(),
+                                        fromProviders(PojoCodecProvider.builder().automatic(true).build()))).build()
     
+
+    );
+    }
+
     public static Conexion createInstance() {
-        if(conexion==null) {
+        if (conexion == null) {
             conexion = new Conexion();
         }
         return conexion;
+    }
+
+    private void onShutDown() {
+        
+        Conexion.conexion.close();
+        
     }
     
 }

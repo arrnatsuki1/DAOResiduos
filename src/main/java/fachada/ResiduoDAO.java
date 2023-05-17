@@ -4,8 +4,8 @@
  */
 package fachada;
 
-import Entidades.Quimico;
-import Entidades.Residuo;
+import fachada.Quimico;
+import fachada.Residuo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

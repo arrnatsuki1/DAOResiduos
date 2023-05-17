@@ -4,7 +4,9 @@
  */
 package fachada;
 
-import Entidades.Asignacion;
+import fachada.Asignacion;
+
+
 
 /**
  *
@@ -14,6 +16,8 @@ class AsignacionesDAO {
     
     public void guardarAsignacion(Asignacion asignacion) {
         Conexion c = Conexion.createInstance();
+        
+        
         
         //Lo que tenga que hacer para guardar
         
