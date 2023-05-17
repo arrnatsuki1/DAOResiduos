@@ -5,7 +5,6 @@
 package fachada;
 
 import EntidadesMongo.AsignacionMongo;
-import EntidadesMongo.ResiduoMongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import fachada.Asignacion;

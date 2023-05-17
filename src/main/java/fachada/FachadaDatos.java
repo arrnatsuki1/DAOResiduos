@@ -55,7 +55,7 @@ class FachadaDatos implements IDatos {
 
     @Override
     public List<Quimico> obtenerTodosLosQuimicos() {
-        return null;
+        return daoquimicos.obtenerTodosLosQuimicos();
     }
 
 }
