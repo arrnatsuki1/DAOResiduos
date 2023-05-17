@@ -4,6 +4,7 @@
  */
 package fachada;
 
+import Entidades.Asignacion;
 import Entidades.Quimico;
 import Entidades.Residuo;
 import java.util.List;
@@ -20,7 +21,7 @@ class FachadaDatos implements IDatos {
     private TransportesDAO daotransportes;
     private SolicitudesDAO daosolicitudes;
     private ResiduoDAO daoresiduos;
-    
+    private AsignacionesDAO daoasignaciones;
     
     public FachadaDatos() {
         this.daoempresas = new EmpresasDAO();
@@ -29,7 +30,13 @@ class FachadaDatos implements IDatos {
         this.daosolicitudes = new SolicitudesDAO();
         this.daotransportes = new TransportesDAO();
         this.daotraslados = new TrasladoDAO();
+        this.daoasignaciones = new AsignacionesDAO();
     }
+    
+    @Override
+    public void guardarAsignacion(Asignacion a) {
+        
+    }   
     
     @Override
     public List<Residuo> obtenerTodosLosResiduos() {

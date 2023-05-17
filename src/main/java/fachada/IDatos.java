@@ -4,6 +4,7 @@
  */
 package fachada;
 
+import Entidades.Asignacion;
 import Entidades.Quimico;
 import Entidades.Residuo;
 import java.util.List;
@@ -17,4 +18,5 @@ public interface IDatos {
     boolean comprobarResiduo(Residuo residuo);
     void guardarResiduo(Residuo residuo);
     List<Quimico> obtenerTodosLosQuimicos();
+    public void guardarAsignacion(Asignacion a);
 }
