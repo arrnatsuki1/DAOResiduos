@@ -4,6 +4,11 @@
  */
 package fachada;
 
+import EntidadesMongo.ResiduoMongo;
+import EntidadesMongo.SolicitudMongo;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 import fachada.Quimico;
 import fachada.Residuo;
 import java.io.BufferedReader;
@@ -20,13 +25,24 @@ import java.util.List;
  */
 class ResiduoDAO {
 
+    private final String nombreColeccion = "ResiduoMongo";
     
     public List<Residuo> obtenerTodosLosResiduos() {
-        Conexion c = Conexion.createInstance();
-        return null;
+        MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
+        MongoCursor<ResiduoMongo> cursor = c.find().iterator();
+        
+        List<Residuo> lista = new ArrayList();
+        
+        while(cursor.hasNext()) {
+            ResiduoMongo rm = cursor.next();
+            Residuo r = new Residuo();
+            r.setCodigo(cursor.next().getCodigo().toString());
+            r.setQuimicos(rm.getQuimicos());
+            lista.add(r);
+        }
+        return lista;
     }
 
-    
     public boolean comprobarResiduo(Residuo residuo) {
         Conexion c = Conexion.createInstance();
         //EN UN TXT POR AHORA
@@ -97,4 +113,10 @@ class ResiduoDAO {
         }
     }
 
+    private MongoCollection<ResiduoMongo> getCollection(Conexion c) {
+        MongoDatabase db = c.getDatabase("DISEÑO");
+        MongoCollection<ResiduoMongo> collecionAsignaciones = db.getCollection(nombreColeccion, ResiduoMongo.class);
+        return collecionAsignaciones;
+    }
+    
 }

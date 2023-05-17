@@ -4,7 +4,12 @@
  */
 package fachada;
 
+import EntidadesMongo.AsignacionMongo;
+import EntidadesMongo.ResiduoMongo;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import fachada.Asignacion;
+import java.util.ArrayList;
 
 
 
@@ -14,13 +19,25 @@ import fachada.Asignacion;
  */
 class AsignacionesDAO {
     
+    private String nombreColeccion = "Asignaciones";
+    
     public void guardarAsignacion(Asignacion asignacion) {
-        Conexion c = Conexion.createInstance();
+        MongoCollection<AsignacionMongo> collection = getCollection(Conexion.createInstance());
         
+        AsignacionMongo am = new AsignacionMongo();
+        am.setCantidadTotal(asignacion.getCantidadTotal());
+        am.setResiduo(asignacion.getResiduo());
+        am.setTraslados(new ArrayList());
         
-        
+        collection.insertOne(am);
         //Lo que tenga que hacer para guardar
         
+    }
+    
+    private MongoCollection<AsignacionMongo> getCollection(Conexion c) {
+        MongoDatabase db = c.getDatabase("DISEÑO");
+        MongoCollection<AsignacionMongo> collecionAsignaciones = db.getCollection(nombreColeccion, AsignacionMongo.class);
+        return collecionAsignaciones;
     }
     
 }

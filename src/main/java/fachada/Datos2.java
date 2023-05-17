@@ -5,6 +5,9 @@
 
 package fachada;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author Rosa Rodriguez
@@ -12,9 +15,8 @@ package fachada;
 public class Datos2 {
 
     public static void main(String[] args) {
-       QuimicoDAO d = new QuimicoDAO();
-       for(Quimico q : d.obtenerTodosLosQuimicos()) {
-           System.out.println(q.getNombre());
-       }
+        
+        
+        
     }
 }
