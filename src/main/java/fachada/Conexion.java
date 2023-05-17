@@ -25,10 +25,7 @@ class Conexion extends com.mongodb.MongoClient {
                 MongoClientOptions.builder()
                         .codecRegistry(
                                 fromRegistries(MongoClient.getDefaultCodecRegistry(),
-                                        fromProviders(PojoCodecProvider.builder().automatic(true).build()))).build()
-    
-
-    );
+                                        fromProviders(PojoCodecProvider.builder().automatic(true).build()))).build());
     }
 
     public static Conexion createInstance() {
@@ -36,12 +33,6 @@ class Conexion extends com.mongodb.MongoClient {
             conexion = new Conexion();
         }
         return conexion;
-    }
-
-    private void onShutDown() {
-        
-        Conexion.conexion.close();
-        
     }
     
 }
