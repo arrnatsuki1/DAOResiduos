@@ -21,7 +21,7 @@ class Conexion extends com.mongodb.MongoClient {
     private static Conexion conexion;
 
     private Conexion() {
-        super("192.168.0.29",
+        super("localhost",
                 MongoClientOptions.builder()
                         .codecRegistry(
                                 fromRegistries(MongoClient.getDefaultCodecRegistry(),
@@ -34,5 +34,5 @@ class Conexion extends com.mongodb.MongoClient {
         }
         return conexion;
     }
-    
+
 }

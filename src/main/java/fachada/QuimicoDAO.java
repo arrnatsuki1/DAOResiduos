@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class QuimicoDAO{
 
-    private final String nombreColeccion = "ResiduoMongo";
+    private final String nombreColeccion = "ResiduosMongo";
     
     public List<Quimico> obtenerTodosLosQuimicos() {
         
