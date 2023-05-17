@@ -5,7 +5,6 @@
 package fachada;
 
 import EntidadesMongo.ResiduoMongo;
-import EntidadesMongo.SolicitudMongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -26,14 +25,16 @@ import java.util.List;
 class ResiduoDAO {
 
     private final String nombreColeccion = "ResiduoMongo";
+    private final String nombreEmpresaGenerico = "ITSON";
+    
     
     public List<Residuo> obtenerTodosLosResiduos() {
         MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
         MongoCursor<ResiduoMongo> cursor = c.find().iterator();
-        
+
         List<Residuo> lista = new ArrayList();
-        
-        while(cursor.hasNext()) {
+
+        while (cursor.hasNext()) {
             ResiduoMongo rm = cursor.next();
             Residuo r = new Residuo();
             r.setCodigo(cursor.next().getCodigo().toString());
@@ -65,7 +66,7 @@ class ResiduoDAO {
                 }
 
                 r.setQuimicos(quimicos);
-                
+
                 if (residuo.getQuimicos().equals(r.getQuimicos())) {
                     return true;
                 }
@@ -80,37 +81,12 @@ class ResiduoDAO {
     }
 
     public void guardarResiduo(Residuo residuo) {
-        Conexion c = Conexion.createInstance();
-        //EN UN TXT POR AHORA
-        try {
-            String texto = "";
-            File f = new File("residuos.txt");
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-
-            String line = br.readLine();
-            
-            while (line != null) {
-                texto += line+"\n";
-                line = br.readLine();
-            }
-
-            
-            for(Quimico q : residuo.getQuimicos()) {
-                texto+=q.getNombre()+"/";
-            }
-
-            br.close();
-            fr.close();
-            FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            
-            bw.write(texto);
-            bw.close();
-            fw.close();
-
-        } catch (Exception e) {
-        }
+        MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
+        ResiduoMongo rm = new ResiduoMongo();
+        rm.setNombre(residuo.getCodigo());
+        rm.setNombreProductor(nombreEmpresaGenerico);
+        rm.setQuimicos(residuo.getQuimicos());
+        c.insertOne(rm);
     }
 
     private MongoCollection<ResiduoMongo> getCollection(Conexion c) {
@@ -118,5 +94,5 @@ class ResiduoDAO {
         MongoCollection<ResiduoMongo> collecionAsignaciones = db.getCollection(nombreColeccion, ResiduoMongo.class);
         return collecionAsignaciones;
     }
-    
+
 }
