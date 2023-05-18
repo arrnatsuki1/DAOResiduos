@@ -8,6 +8,8 @@ import Excepciones.BaseException;
 import fachada.Asignacion;
 import fachada.Quimico;
 import fachada.Residuo;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +18,12 @@ import java.util.List;
  */
 public interface IDatos {
     List<Residuo> obtenerTodosLosResiduos();
+    List<Residuo> obtenerTodosLosDeProductor(String productor) throws BaseException;
     boolean comprobarResiduo(Residuo residuo);
     void guardarResiduo(Residuo residuo);
     List<Quimico> obtenerTodosLosQuimicos()throws BaseException;
     public void guardarAsignacion(Asignacion a);
+    public boolean haySolicitudFechaProductor(Solicitud s);
+    public long verificaCantidadFecha(Date dia);
+    public void guardarSolicitud(Solicitud s);
 }

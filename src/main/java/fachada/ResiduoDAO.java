@@ -5,6 +5,7 @@
 package fachada;
 
 import EntidadesMongo.ResiduoMongo;
+import Excepciones.BaseException;
 import Excepciones.ResiduoExistenteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -25,8 +26,7 @@ class ResiduoDAO {
 
     private final String nombreColeccion = "ResiduoMongo";
     private final String nombreEmpresaGenerico = "ITSON";
-    
-    
+
     public List<Residuo> obtenerTodosLosResiduos() {
         MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
         MongoCursor<ResiduoMongo> cursor = c.find().iterator();
@@ -43,52 +43,77 @@ class ResiduoDAO {
         }
         return lista;
     }
-    
+
+    public List<Residuo> obtenerTodosLosResiduosDeProductor(String productor) throws BaseException {
+
+        try {
+            MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
+
+            MongoCursor<ResiduoMongo> residuos = c.find(
+                    Filters.eq("nombreProductor", productor)
+            ).iterator();
+            List<Residuo> res = new ArrayList();
+            while (residuos.hasNext()) {
+                ResiduoMongo rm = residuos.next();
+                Residuo r = new Residuo();
+                r.setCodigo(rm.getCodigo());
+                r.setNombre(rm.getNombre());
+                r.setQuimicos(rm.getQuimicos());
+                res.add(r);
+            }
+            return res;
+        } catch (Exception e) {
+            
+            throw new BaseException(e.getMessage());
+            
+        }
+
+    }
+
     public boolean comprobarResiduo(Residuo residuo) {
         MongoCollection<ResiduoMongo> c = getCollection(Conexion.createInstance());
-        
+
         /*
             IGNORE ESTO, NO LE SABEMO CASI A LAS CONSULTAS ASI QUE OCUPAMOS
             ORDENAR LOS RESIDUOS ANTES DE CONSULTARLOS
-        */
+         */
         List<String> quimicos = new ArrayList();
-        for(Quimico q : residuo.getQuimicos()) {
+        for (Quimico q : residuo.getQuimicos()) {
             quimicos.add(q.getNombre());
         }
         Collections.sort(quimicos);
         List<Quimico> q = new ArrayList();
-        for(String sq : quimicos) {
+        for (String sq : quimicos) {
             q.add(new Quimico(sq));
         }
         residuo.setQuimicos(q);
         /* FIN DE NUESTRA ASQUEROSIDAD */
-        
-        
+
         //Con la misma composicion quimica
         MongoCursor<ResiduoMongo> comprobacion = c.find(
                 Filters.eq("quimicos", residuo.getQuimicos())
         ).iterator();
-        
-        if(comprobacion.hasNext()) {
+
+        if (comprobacion.hasNext()) {
             return true;
         }
         //Con el mismo nombre
         comprobacion = c.find(
                 Filters.eq("nombre", residuo.getNombre())
         ).iterator();
-        
-        if(comprobacion.hasNext()) {
+
+        if (comprobacion.hasNext()) {
             return true;
         }
         //Que tenga el mismo codigo
         comprobacion = c.find(
                 Filters.eq("codigo", residuo.getCodigo())
         ).iterator();
-        
-        if(comprobacion.hasNext()) {
+
+        if (comprobacion.hasNext()) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -101,17 +126,15 @@ class ResiduoDAO {
         rm.setQuimicos(residuo.getQuimicos());
         c.insertOne(rm);
     }
-    
+
     private MongoCollection<ResiduoMongo> getCollection(Conexion c) {
         MongoDatabase db = c.getDatabase("DISEÑO");
         MongoCollection<ResiduoMongo> collecionAsignaciones = db.getCollection(nombreColeccion, ResiduoMongo.class);
         return collecionAsignaciones;
     }
-    
+
     private void SortArray() {
-        
-        
-        
+
     }
 
 }

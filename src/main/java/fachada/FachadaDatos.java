@@ -9,6 +9,8 @@ import Excepciones.BaseException;
 import fachada.Asignacion;
 import fachada.Quimico;
 import fachada.Residuo;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,6 +60,25 @@ class FachadaDatos implements IDatos {
     @Override
     public List<Quimico> obtenerTodosLosQuimicos() throws BaseException {
         return daoquimicos.obtenerTodosLosQuimicos();
+    }
+
+    @Override
+    public List<Residuo> obtenerTodosLosDeProductor(String productor) throws BaseException {
+        return daoresiduos.obtenerTodosLosResiduosDeProductor(productor);
+    }
+
+    @Override
+    public boolean haySolicitudFechaProductor(Solicitud s) {
+        return daosolicitudes.haySolicitudFechaProductor(s);
+    }
+    @Override
+    public long verificaCantidadFecha(Date dia) {
+        return daotraslados.cantidadTrasladosDia(dia);
+    }
+
+    @Override
+    public void guardarSolicitud(Solicitud s) {
+        daosolicitudes.guardarSolicitud(s);
     }
 
 }
