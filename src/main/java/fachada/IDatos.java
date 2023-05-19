@@ -26,4 +26,6 @@ public interface IDatos {
     public boolean haySolicitudFechaProductor(Solicitud s);
     public long verificaCantidadFecha(Date dia);
     public void guardarSolicitud(Solicitud s);
+    public List<Solicitud> obtenerTodasLasSolicitudes() throws BaseException;
+    public List<Empresa> obtenerTodasLasEmpresas() throws BaseException;
 }

@@ -5,12 +5,14 @@
 package fachada;
 
 import EntidadesMongo.ResiduoMongo;
+import Excepciones.BaseException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -58,6 +60,19 @@ class SolicitudesDAO {
     public void guardarSolicitud(Solicitud s) {
         MongoCollection collection = this.getCollection(Conexion.createInstance());
         collection.insertOne(s);
+    }
+    
+    public List<Solicitud> obtenerTodasLasSolicitudes() throws BaseException
+    {
+        MongoCollection<Solicitud> collection = this.getCollection(Conexion.createInstance());
+        MongoCursor<Solicitud> cursor = collection.find(
+                Filters.eq("estado", false)
+        ).iterator();
+        List<Solicitud> temp = new LinkedList();
+        while(cursor.hasNext()) {
+            temp.add(cursor.next());
+       }
+        return temp;
     }
     
     private MongoCollection<Solicitud> getCollection(Conexion c) {

@@ -18,19 +18,21 @@ import java.util.ArrayList;
  */
 class AsignacionesDAO {
     
-    private String nombreColeccion = "Asignaciones";
+    private final String nombreColeccion = "AsignacionesMongo";
     
     public void guardarAsignacion(Asignacion asignacion) {
-        MongoCollection<AsignacionMongo> collection = getCollection(Conexion.createInstance());
-        
+        MongoCollection<AsignacionMongo> collection = getCollection(Conexion.createInstance());        
+        AsignacionMongo asignacionm = transformar(asignacion);
+        collection.insertOne(asignacionm);
+    }
+    
+    private AsignacionMongo transformar(Asignacion a) {
         AsignacionMongo am = new AsignacionMongo();
-        am.setCantidadTotal(asignacion.getCantidadTotal());
-        am.setResiduo(asignacion.getResiduo());
+        am.setCantidadTotal(a.getCantidadTotal());
+        am.setResiduo(a.getResiduo());
         am.setTraslados(new ArrayList());
-        
-        collection.insertOne(am);
-        //Lo que tenga que hacer para guardar
-        
+        am.setEmpresas(a.getEmpresas());
+        return am;
     }
     
     private MongoCollection<AsignacionMongo> getCollection(Conexion c) {

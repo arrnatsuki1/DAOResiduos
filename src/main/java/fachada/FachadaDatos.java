@@ -39,7 +39,7 @@ class FachadaDatos implements IDatos {
     
     @Override
     public void guardarAsignacion(Asignacion a) {
-        
+        daoasignaciones.guardarAsignacion(a);
     }   
     
     @Override
@@ -80,5 +80,17 @@ class FachadaDatos implements IDatos {
     public void guardarSolicitud(Solicitud s) {
         daosolicitudes.guardarSolicitud(s);
     }
+
+    @Override
+    public List<Solicitud> obtenerTodasLasSolicitudes() throws BaseException {
+        return daosolicitudes.obtenerTodasLasSolicitudes();
+    }
+
+    @Override
+    public List<Empresa> obtenerTodasLasEmpresas() throws BaseException {
+        return daoempresas.obtenerTodasLasEmpresas();
+    }
+    
+    
 
 }
